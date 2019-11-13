@@ -1,0 +1,155 @@
+#prejmenovani
+colnames(pop.2012)[2] <- "populace" 
+
+#vyber sloupcu
+crime.2012 <- Crimes[,c("GEO","X2012")]
+
+# vyber sloupce
+crime.2012[,2]
+
+#vyber radek jehoz hodnota je "Scotland" a jeho druhy sloupec
+crime.2012[crime.2012$GEO == "Scotland",2]
+crime.2012[crime.2012$GEO == "Northern Ireland (UK)",2]
+crime.2012[crime.2012$GEO == "England and Wales",2]
+
+#secteni
+crime.2012[crime.2012$GEO == "Scotland",2] + crime.2012[crime.2012$GEO == "Northern Ireland (UK)",2] + crime.2012[crime.2012$GEO == "England and Wales",2]
+
+# struktura tabulky
+str(crime.2012)
+
+# funkce menici datovy typ as.character() - prepise datovy typ na text 
+crime.2012[,1] <- as.character(crime.2012[,1])
+
+#pridani radku cislo 49 a jeho "naplneni"
+crime.2012[49,] <- c("United Kingdom", UK)
+
+#prevedeni na numericky format
+crime.2012[,2] <- as.numeric(crime.2012[,2])
+
+#spojeni datovych sad
+nez.crime <- merge(nezam.total, crime.2012, by = "GEO")
+
+#prepocet na 10 000 obyvatel (vytvoreni sloupce)
+data.2012[,5] <- 10000*data.2012$kriminalita/data.2012$populace
+
+#vytvoreni textoveho souboru
+write.table(data.2012,"data.2012.txt")
+
+#vytvoreni prumeru bez hodnot obsahujicich NA
+mean(data.2012[,2], na.rm=T)
+
+#vytvoreni prumeru a 10% orezani
+mean(data.2012[,2], trim = 0.1, na.rm=T)
+
+#prumer v cele tabulce sloupec za sloupcem
+sapply(data.2012, mean, na.rm = T)
+sapply(data.2012[,2:5], mean, na.rm = T, trim = 0.1)
+
+#funkce attach (pripojeni), staci psal uz jen nazvy sloupcu
+attach(data.2012)
+
+#median
+median(nezamestnanost, na.rm=T)
+
+#median v cele tabulce
+sapply(data.2012[,2:5], median, na.rm=T)
+
+#kvantily
+quantile(nezamestnanost, na.rm=T)
+quantile(nezamestnanost, na.rm=T, probs = c(0.33,0.66))
+
+#vygenerovani rady
+quantile(nezamestnanost, na.rm=T, probs = seq(0, 1, 0.1))
+
+#generovani rady
+seq(0,1,0.1)
+
+#ctvrtiny
+1:4
+1:4/5
+
+#geometricky prumer pri rustu
+#harmonicky prumer u extremnich hodnot, jednotky vykonu
+#je potreba je definovat
+
+#modus
+modeOf(data.2012[,2], na.rm = TRUE)
+maxFreq(data.2012[,2], na.rm = TRUE)
+round(data.2012[,2])
+modeOf(round(data.2012[,2]), na.rm = T)
+#minimum
+min(nezamestnanost, na.rm=T)
+#maximum
+max(nezamestnanost, na.rm=T)
+
+#rozsah
+max(nezamestnanost, na.rm=T)-min(nezamestnanost, na.rm = T)
+
+#qvanitly 
+q <- quantile(data.2012[,2], na.rm = T, prob = c(0.25,0.75))
+#rozpeti
+q[2]-q[1]
+
+# nebo
+IQR(data.2012[,2], na.rm=T)
+
+#rozptyl
+var(nezamestnanost, na.rm=T)
+
+#smerodatna odchylka
+sqrt(var(nezamestnanost, na.rm=T))
+#sqvrt odmocnina
+#dalsi moznost
+sd(nezamestnanost, na.rm=T)
+
+mad(data.2012[,2], na.rm=T)
+
+#summary
+summary(data.2012)
+
+#
+fivenum(data.2012[,2], na.rm=T)
+
+#zakladni statistika, potreba balik "psych"
+describe(data.2012[,2], na.rm=T
+
+#pripojeni datove sady
+attach(data.2012)
+
+#vykreslovani grafu
+#zakladni bodovy graf
+plot(nezamestnanost, kriminalita_pop)
+plot(nezamestnanost, kriminalita_pop, xlab = "nezamestnanost v (%)", ylab = "tresne ciny na 10 000 obyvatel", main = "Vztah mezi kriminalitou a nezamestnanosti v roce 2012")
+#popisy os - main = "nazev grafu", xlab = "popis osy x", ylab = "popis osy y""
+# \n odsadi na novy radek
+# zmena znaku pch = 
+#cex = velikost
+#col = barva textu
+text(nezamestnanost, kriminalita_pop, data.2012[,1], cex=0.6, col = "red")
+
+#abline(lm, col="red")
+
+#sloupcovy graf
+barplot(kriminalita_pop)
+
+#barva grafu
+col = rainbow(20)
+
+#histogram
+hist(populace)
+hist(populace, nclass = 2) #tridy
+hist(nezamestnanost, breaks = 10)
+
+#normalni rozdeleni logarytmus
+hist(log(populace), nclass = 12)
+lines(d, col="red", lty=1) # col = barva, lty=druh linie
+
+#boxplot
+boxplot(data.2012)
+
+#funkce scale smrskne rozsah aby byl prumer nula
+
+qqnorm(kriminalita_pop)
+qqline(kriminalita_pop, col= "red")
+
